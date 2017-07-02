@@ -1,21 +1,39 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
+import 'foundation-sites/dist/css/foundation-flex.css'
 import './App.css';
+import LightPanel from './components/light-panel';
+import {connect} from 'react-redux';
+import {bindActionCreators} from "redux";
+import {hueConfig} from "./actions/set-config";
+import HubPicker from './containers/hub-picker';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+    render() {
+        if (!this.props.config) {
+            return (
+                <div className="row">
+                    <div className="column small-4 center">
+                        <HubPicker/>
+                    </div>
+                </div>
+            )
+        }
+
+        return (
+            <div className="row">
+                <div className="column"><LightPanel lights={this.props.lights}/></div>
+                <div className="column">Light Options</div>
+            </div>
+        );
+    }
 }
 
-export default App;
+function mapStateToProps({lights, config}) {
+    return {lights, config}
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({setConfig: hueConfig}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
