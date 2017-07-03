@@ -1,12 +1,14 @@
 import {combineReducers} from "redux";
 import LightsReducer from "./reducer-lights";
-import {Hubs} from "./reducer-hubs";
-import ActiveHub from "./reducer-active-hub";
+import {HubsReducer} from "./reducer-hubs";
+import ActiveHubReducer from "./reducer-active-hub";
+import {ActiveLightReducer} from "./reducer-active-light";
 
 const rootReducer = combineReducers({
     lights: LightsReducer,
-    hubs: Hubs,
-    activeHub: ActiveHub
+    hubs: HubsReducer,
+    activeHub: ActiveHubReducer,
+    activeLight: ActiveLightReducer
 });
 
 export default rootReducer;

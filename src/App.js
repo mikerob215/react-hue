@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import 'foundation-sites/dist/css/foundation-flex.css'
 import './App.css';
 import LightPanel from './containers/light-panel';
+import LightOptions from './containers/light-options';
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import HubPicker from './containers/hub-picker';
@@ -28,7 +29,9 @@ class App extends Component {
                 <div className="column small-3">
                     <LightPanel hub={this.props.activeHub}/>
                 </div>
-                <div className="column">Light Options</div>
+                <div className="column">
+                    <LightOptions/>
+                </div>
             </div>
         );
     }

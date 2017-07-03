@@ -1,6 +1,6 @@
 import {SET_HUB_STATUS, SET_HUBS} from "../actions/hubs";
 
-export const Hubs = (state = [], action) => {
+export const HubsReducer = (state = [], action) => {
     switch (action.type) {
         case SET_HUBS:
             return action.payload;
