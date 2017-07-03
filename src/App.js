@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import 'foundation-sites/dist/css/foundation-flex.css'
-import './App.css';
 import LightPanel from './containers/light-panel';
 import LightOptions from './containers/light-options';
 import {connect} from 'react-redux';
@@ -25,12 +23,14 @@ class App extends Component {
         }
 
         return (
-            <div className="row">
-                <div className="column small-3">
-                    <LightPanel hub={this.props.activeHub}/>
-                </div>
-                <div className="column">
-                    <LightOptions/>
+            <div className="container">
+                <div className="row">
+                    <div className="col s3">
+                        <LightPanel hub={this.props.activeHub}/>
+                    </div>
+                    <div className="col s9">
+                        <LightOptions/>
+                    </div>
                 </div>
             </div>
         );

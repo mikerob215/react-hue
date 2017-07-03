@@ -17,10 +17,10 @@ class LightPanel extends Component {
     render() {
         return (
             <div className="row">
-                <div className="column">
-                    <ul className="vertical menu">
+                <div className="col s-12">
+                    <div className="collection">
                         {this.renderLights()}
-                    </ul>
+                    </div>
                 </div>
             </div>
         )
@@ -29,9 +29,7 @@ class LightPanel extends Component {
     renderLights() {
         const {lights} = this.props;
         return Object.keys(lights).map(key => (
-            <li key={lights[key].name}>
                 <Light light={lights[key]} onLightSelect={light => this.props.setActiveLight(light)}/>
-            </li>
         ))
     }
 

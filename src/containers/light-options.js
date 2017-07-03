@@ -9,7 +9,11 @@ class LightOptions extends Component {
         }
 
         return (
-            <div>{activeLight.state.on}</div>
+            <div className="row">
+                <div className="col s12">
+                    on: {activeLight.state.on.toString()}
+                </div>
+            </div>
         );
     }
 }
