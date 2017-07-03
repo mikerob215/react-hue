@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {fetchHubs} from "../actions/getHubs";
+import {connectToHub, fetchHubs} from "../actions/hubs";
 
 class HubPicker extends Component {
     componentWillMount() {
@@ -9,17 +9,23 @@ class HubPicker extends Component {
     }
 
     render() {
-        console.log(this.props);
+        const {hubs} = this.props;
+
+        if (hubs.length === 0) {
+            return <p>No hubs located</p>
+        }
         return (
             <table>
                 <thead>
                 <tr>
                     <td>ID:</td>
                     <td>IP:</td>
+                    <td>Status:</td>
+                    <td>Action:</td>
                 </tr>
                 </thead>
                 <tbody>
-                {this.renderHubList(this.props.hubs)}
+                {this.renderHubList(hubs)}
                 </tbody>
             </table>
         );
@@ -30,6 +36,13 @@ class HubPicker extends Component {
             <tr key={hub.id}>
                 <td>{hub.id}</td>
                 <td>{hub.internalipaddress}</td>
+                <td>{hub.status}</td>
+                <td>
+                    <button className="button"
+                            onClick={() => this.props.connect(hub)}>
+                        Connect
+                    </button>
+                </td>
             </tr>)
     }
 }
@@ -37,7 +50,8 @@ class HubPicker extends Component {
 const mapStateToProps = ({hubs}) => ({hubs});
 
 const mapDispatchToProps = dispatch => ({
-    getHubs: () => dispatch(fetchHubs())
+    getHubs: () => dispatch(fetchHubs()),
+    connect: hub => dispatch(connectToHub(hub))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HubPicker);

@@ -9,10 +9,10 @@ import HubPicker from './containers/hub-picker';
 
 class App extends Component {
     render() {
-        if (!this.props.config) {
+        if (!this.props.activeHub) {
             return (
-                <div className="row">
-                    <div className="column small-4 center">
+                <div className="row align-center">
+                    <div className="column small-6">
                         <HubPicker/>
                     </div>
                 </div>
@@ -28,12 +28,8 @@ class App extends Component {
     }
 }
 
-function mapStateToProps({lights, config}) {
-    return {lights, config}
-}
+const mapStateToProps = ({lights, config, activeHub}) => ({lights, config, activeHub});
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({setConfig: hueConfig}, dispatch);
-}
+const mapDispatchToProps = (dispatch) => bindActionCreators({setConfig: hueConfig}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
