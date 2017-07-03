@@ -1,8 +1,8 @@
-import {SET_ACTIVE_HUB} from "../actions/hubs";
+import {GET_ACTIVE_HUB} from "../actions/hubs";
 
 const ActiveHub = (state = null, action) => {
     switch (action.type) {
-        case SET_ACTIVE_HUB:
+        case GET_ACTIVE_HUB:
             return action.payload
     }
     return state;

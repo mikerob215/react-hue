@@ -1,13 +1,17 @@
 import React, {Component} from 'react';
 import 'foundation-sites/dist/css/foundation-flex.css'
 import './App.css';
-import LightPanel from './components/light-panel';
+import LightPanel from './containers/light-panel';
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
-import {hueConfig} from "./actions/set-config";
 import HubPicker from './containers/hub-picker';
+import {getActiveHub} from "./actions/hubs";
 
 class App extends Component {
+    componentWillMount() {
+        this.props.getActiveHub();
+    }
+
     render() {
         if (!this.props.activeHub) {
             return (
@@ -21,7 +25,9 @@ class App extends Component {
 
         return (
             <div className="row">
-                <div className="column"><LightPanel lights={this.props.lights}/></div>
+                <div className="column small-3">
+                    <LightPanel hub={this.props.activeHub}/>
+                </div>
                 <div className="column">Light Options</div>
             </div>
         );
@@ -30,6 +36,6 @@ class App extends Component {
 
 const mapStateToProps = ({lights, config, activeHub}) => ({lights, config, activeHub});
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({setConfig: hueConfig}, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({getActiveHub}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

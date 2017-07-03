@@ -5,12 +5,8 @@ export const Hubs = (state = [], action) => {
         case SET_HUBS:
             return action.payload;
         case SET_HUB_STATUS:
-            const hubs = Object.assign([], state);
-            console.log(action);
-            console.log(hubs);
-            return hubs.map(hub => {
+            return state.map(hub => {
                 if (action.payload.hub.id === hub.id) {
-                    console.log(hub);
                     hub.status = action.payload.status;
                     return hub;
                 }
