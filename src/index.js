@@ -8,12 +8,15 @@ import registerServiceWorker from './registerServiceWorker';
 import rootReducer from "./reducers/index";
 import thunk from 'redux-thunk';
 import {Provider} from "react-redux";
+import {BrowserRouter} from "react-router-dom";
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
 ReactDOM.render(
-    <Provider store={store}>
-        <App/>
-    </Provider>,
+    <BrowserRouter>
+        <Provider store={store}>
+            <App/>
+        </Provider>
+    </BrowserRouter>,
     document.getElementById('root'));
 registerServiceWorker();

@@ -1,17 +1,12 @@
 import {SET_HUB_STATUS, SET_HUBS} from "../actions/hubs";
 
-export const HubsReducer = (state = [], action) => {
+export const HubsReducer = (state = {}, action) => {
     switch (action.type) {
         case SET_HUBS:
+            console.log(action);
             return action.payload;
         case SET_HUB_STATUS:
-            return state.map(hub => {
-                if (action.payload.hub.id === hub.id) {
-                    hub.status = action.payload.status;
-                    return hub;
-                }
-                return hub;
-            })
+            return action.payload;
     }
     return state;
 };

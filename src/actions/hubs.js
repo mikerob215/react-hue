@@ -13,7 +13,25 @@ const UPNP_DISCOVERY_URL = 'https://www.meethue.com/api/nupnp';
 export const fetchHubs = () => {
     const hubs = axios.get(UPNP_DISCOVERY_URL).then(response => response.data);
     return dispatch =>
-        hubs.then(hubs => dispatch(setHubs(hubs)))
+        hubs.then(data => dispatch(setHubs(data)));
+};
+
+export const getHub = id => {
+    try {
+        return JSON.parse(localStorage.getItem('HUE_HUBS'))[id];
+    } catch (e) {
+        return null;
+    }
+};
+
+export const modifyHubAttribute = (id, attribute, value) => {
+    const hubStore = JSON.parse(localStorage.getItem('HUE_HUBS'));
+    hubStore[`${id}`][attribute] = value;
+    localStorage.setItem('HUE_HUBS', JSON.stringify(hubStore));
+};
+
+export const addHub = (id, config) => {
+    return localStorage.setItem('HUE_HUBS', JSON.stringify(Object.assign({}, {[id]: {...config}})));
 };
 
 /**
@@ -25,12 +43,16 @@ export const fetchHubs = () => {
  */
 export const SET_HUBS = 'SET_HUBS';
 export const setHubs = hubs => {
+    hubs.forEach(hub => {
+        const {id, internalipaddress} = hub;
+        if (!getHub(id)) {
+            addHub(id, {id, ip: internalipaddress, status: 'Unlinked'});
+        }
+    });
+
     return ({
         type: SET_HUBS,
-        payload: hubs.map(hub => {
-            hub.status = 'UNKNOWN';
-            return hub;
-        })
+        payload: JSON.parse(localStorage.getItem('HUE_HUBS'))
     });
 };
 
@@ -43,17 +65,20 @@ export const setHubs = hubs => {
  * @return {function(*): Promise.<TResult>}
  */
 export const connectToHub = hub => {
-    const {internalipaddress, id} = hub;
+    const {ip, id} = hub;
     return dispatch =>
-        axios.post(`http://${internalipaddress}/api`,
+        axios.post(`http://${ip}/api`,
             {devicetype: `react-hue`})
             .then(data => {
                 const response = data.data[0];
                 if (response.success) {
-                    return dispatch(setActiveHub(hub, response.success.username));
+                    modifyHubAttribute(id, 'status', 'linked');
+                    modifyHubAttribute(id, 'username', response.success.username);
+                    return dispatch(setHubStatus(getHub(hub.id)));
                 }
                 if (response.error) {
-                    return dispatch(setHubError(hub, response.error.description))
+                    modifyHubAttribute(id, 'status', response.error.description);
+                    return dispatch(setHubStatus(getHub(hub.id)))
                 }
             })
 };
@@ -86,12 +111,13 @@ export const getActiveHub = () =>
     });
 
 /**
- * @name setHubError
+ * @name setHubStatus
  * @type {string}
  */
-export const SET_HUB_STATUS = 'SET_HUB_ERROR';
-export const setHubError = (hub, status) =>
-    ({
+export const SET_HUB_STATUS = 'SET_HUB_STATUS';
+export const setHubStatus = hub => {
+    return ({
         type: SET_HUB_STATUS,
-        payload: {hub, status}
+        payload: JSON.parse(localStorage.getItem('HUE_HUBS'))
     });
+};

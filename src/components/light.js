@@ -1,14 +1,12 @@
 import React from 'react';
+import {Link} from "react-router-dom";
 
-const Light = ({light, onLightSelect}) => {
-    return <a href="#"
-              className="collection-item"
-              onClick={e => {
-                  e.preventDefault();
-                  onLightSelect(light);
-              }}>
+const Light = ({lightId, light, onLightSelect}) => {
+    return <Link
+        to={`/light/${lightId}`}
+        className="collection-item">
         {light.name}
-    </a>;
+    </Link>;
 };
 
 export default Light;

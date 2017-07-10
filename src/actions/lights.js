@@ -14,4 +14,3 @@ export const setLights = lights => {
         lights: lights
     };
 };
-

@@ -8,10 +8,11 @@ class LightPanel extends Component {
     constructor(props) {
         super(props);
         this.renderLights = this.renderLights.bind(this);
+        this.props.fetchLights(this.props.hub);
+
     }
 
-    componentWillMount() {
-        this.props.fetchLights(this.props.hub);
+    componentDidMount() {
     }
 
     render() {
@@ -28,8 +29,13 @@ class LightPanel extends Component {
 
     renderLights() {
         const {lights} = this.props;
+        if (!lights) return null;
         return Object.keys(lights).map(key => (
-                <Light light={lights[key]} onLightSelect={light => this.props.setActiveLight(light)}/>
+            <Light
+                lightId={key}
+                key={key}
+                light={lights[key]}
+                onLightSelect={light => this.props.setActiveLight(light)}/>
         ))
     }
 
@@ -37,9 +43,10 @@ class LightPanel extends Component {
 
 const mapStateToProps = ({lights, activeLight}) => ({lights, activeLight});
 
-const mapDispatchToProps = dispatch => ({
-    fetchLights: hub => dispatch(fetchLights(hub)),
-    setActiveLight: light => dispatch(setActiveLight(light))
-});
+const mapDispatchToProps = dispatch =>
+    ({
+        fetchLights: hub => dispatch(fetchLights(hub)),
+        setActiveLight: light => dispatch(setActiveLight(light))
+    });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LightPanel);

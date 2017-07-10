@@ -3,17 +3,43 @@ import {connect} from "react-redux";
 import {connectToHub, fetchHubs} from "../actions/hubs";
 
 class HubPicker extends Component {
+    renderHubList = (hubs) => {
+        return Object.keys(hubs).map(key => {
+            const hub = hubs[key];
+            return <tr key={key}>
+                <td>{hub.id}</td>
+                <td>{hub.ip}</td>
+                <td>{hub.status}</td>
+                <td>
+                    <button className="button"
+                            onClick={() => this.props.connect(hub)}>
+                        Connect
+                    </button>
+                </td>
+            </tr>;
+        })
+    }
+
     componentWillMount() {
         this.props.getHubs();
-        this.renderHubList = this.renderHubList.bind(this);
+        // this.renderHubList = this.renderHubList.bind(this);
     }
 
     render() {
         const {hubs} = this.props;
 
-        if (hubs.length === 0) {
-            return <p>No hubs located</p>
+        if (!hubs) {
+            return (
+                <div className="row">
+                    <div className="col s12">
+                        <div className="progress">
+                            <div className="indeterminate"></div>
+                        </div>
+                    </div>
+                </div>
+            )
         }
+
         return (
             <table>
                 <thead>
@@ -29,21 +55,6 @@ class HubPicker extends Component {
                 </tbody>
             </table>
         );
-    }
-
-    renderHubList(hubs) {
-        return hubs.map(hub =>
-            <tr key={hub.id}>
-                <td>{hub.id}</td>
-                <td>{hub.internalipaddress}</td>
-                <td>{hub.status}</td>
-                <td>
-                    <button className="button"
-                            onClick={() => this.props.connect(hub)}>
-                        Connect
-                    </button>
-                </td>
-            </tr>)
     }
 }
 
