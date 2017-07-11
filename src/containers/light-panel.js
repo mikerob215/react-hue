@@ -3,16 +3,16 @@ import {connect} from "react-redux";
 import {fetchLights} from "../actions/lights";
 import Light from "../components/light";
 import {setActiveLight} from "../actions/active-light";
+import {getHub} from "../actions/hubs";
 
 class LightPanel extends Component {
     constructor(props) {
         super(props);
         this.renderLights = this.renderLights.bind(this);
-        this.props.fetchLights(this.props.hub);
+        const hub = getHub(this.props.match.params.id);
+        console.log(this.props.match.params.id);
+        this.props.fetchLights(hub);
 
-    }
-
-    componentDidMount() {
     }
 
     render() {
@@ -41,7 +41,7 @@ class LightPanel extends Component {
 
 }
 
-const mapStateToProps = ({lights, activeLight}) => ({lights, activeLight});
+const mapStateToProps = ({lights, activeLight, hubs}) => ({lights, activeLight});
 
 const mapDispatchToProps = dispatch =>
     ({

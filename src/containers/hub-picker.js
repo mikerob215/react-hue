@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {connectToHub, fetchHubs} from "../actions/hubs";
+import {Link} from "react-router-dom";
 
 class HubPicker extends Component {
     renderHubList = (hubs) => {
@@ -12,17 +13,20 @@ class HubPicker extends Component {
                 <td>{hub.status}</td>
                 <td>
                     <button className="button"
-                            onClick={() => this.props.connect(hub)}>
+                            onClick={() => this.props.connect(hub)}
+                            disabled={hub.username}>
                         Connect
                     </button>
                 </td>
+                <td>
+                    <Link to={`/hubs/${hub.id}`}>Use Hub</Link>
+                </td>
             </tr>;
         })
-    }
+    };
 
     componentWillMount() {
         this.props.getHubs();
-        // this.renderHubList = this.renderHubList.bind(this);
     }
 
     render() {
@@ -48,6 +52,7 @@ class HubPicker extends Component {
                     <td>IP:</td>
                     <td>Status:</td>
                     <td>Action:</td>
+                    <td>Use:</td>
                 </tr>
                 </thead>
                 <tbody>
