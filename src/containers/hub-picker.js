@@ -12,7 +12,7 @@ class HubPicker extends Component {
                 <td>{hub.ip}</td>
                 <td>{hub.status}</td>
                 <td>
-                    <button className="button"
+                    <button className="waves-effect waves-light btn"
                             onClick={() => this.props.connect(hub)}
                             disabled={hub.username}>
                         Connect
@@ -45,7 +45,7 @@ class HubPicker extends Component {
         }
 
         return (
-            <table>
+            <table className="striped">
                 <thead>
                 <tr>
                     <td>ID:</td>
