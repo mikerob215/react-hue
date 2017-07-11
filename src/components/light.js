@@ -6,6 +6,9 @@ const Light = ({lightId, light, onLightSelect}) => {
         to={`/light/${lightId}`}
         className="collection-item">
         {light.name}
+        <span className="badge">
+        {light.state.on ? 'On' : 'Off'}
+        </span>
     </Link>;
 };
 
