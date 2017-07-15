@@ -6,6 +6,7 @@ export const HubsReducer = (state = {}, action) => {
             return action.payload;
         case SET_HUB_STATUS:
             return action.payload;
+        default:
+            return state;
     }
-    return state;
 };

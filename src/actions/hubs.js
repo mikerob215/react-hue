@@ -1,6 +1,7 @@
 import axios from "axios";
+import * as R from "ramda";
+import {hubQuery, hubs} from "../hue-interface/index";
 
-export const FETCH_HUBS = 'FETCH_HUBS';
 const UPNP_DISCOVERY_URL = 'https://www.meethue.com/api/nupnp';
 
 /**
@@ -12,20 +13,16 @@ const UPNP_DISCOVERY_URL = 'https://www.meethue.com/api/nupnp';
  */
 export const fetchHubs = () => {
     const hubs = axios.get(UPNP_DISCOVERY_URL).then(response => response.data);
-    return dispatch =>
-        hubs.then(data => dispatch(setHubs(data)));
+    return dispatch => hubs.then(R.compose(dispatch, setHubs));
 };
 
-export const getHub = id => {
-    try {
-        return JSON.parse(localStorage.getItem('HUE_HUBS'))[id];
-    } catch (e) {
-        return null;
-    }
-};
+export const getHubs =
+    R.compose(JSON.parse, localStorage.getItem, R.identity('HUE_HUBS'));
+
+export const getHub = id => R.propOr(null, id)(getHubs);
 
 export const modifyHubAttribute = (id, attribute, value) => {
-    const hubStore = JSON.parse(localStorage.getItem('HUE_HUBS'));
+    const hubStore = hubs();
     hubStore[`${id}`][attribute] = value;
     localStorage.setItem('HUE_HUBS', JSON.stringify(hubStore));
 };
@@ -42,17 +39,17 @@ export const addHub = (id, config) => {
  * @type {string}
  */
 export const SET_HUBS = 'SET_HUBS';
-export const setHubs = hubs => {
-    hubs.forEach(hub => {
+export const setHubs = hubss => {
+    hubss.forEach(hub => {
         const {id, internalipaddress} = hub;
-        if (!getHub(id)) {
+        if (!hubQuery(id)) {
             addHub(id, {id, ip: internalipaddress, status: 'Unlinked'});
         }
     });
 
     return ({
         type: SET_HUBS,
-        payload: JSON.parse(localStorage.getItem('HUE_HUBS'))
+        payload: hubs()
     });
 };
 
@@ -84,33 +81,6 @@ export const connectToHub = hub => {
 };
 
 /**
- * @name setActiveHub
- * @type {string}
- */
-export const SET_ACTIVE_HUB = 'SET_ACTIVE_HUB';
-export const setActiveHub = (hub, username) => {
-    localStorage.setItem('HUE_USERNAME', username);
-    localStorage.setItem('HUE_IP', hub.internalipaddress);
-    return ({
-        type: SET_ACTIVE_HUB,
-        payload: {
-            username: localStorage.getItem('HUE_USERNAME'),
-            ip: localStorage.getItem('HUE_IP')
-        }
-    });
-};
-
-export const GET_ACTIVE_HUB = 'GET_ACTIVE_HUB';
-export const getActiveHub = () =>
-    ({
-        type: GET_ACTIVE_HUB,
-        payload: {
-            username: localStorage.getItem('HUE_USERNAME'),
-            ip: localStorage.getItem('HUE_IP')
-        }
-    });
-
-/**
  * @name setHubStatus
  * @type {string}
  */
@@ -118,6 +88,6 @@ export const SET_HUB_STATUS = 'SET_HUB_STATUS';
 export const setHubStatus = hub => {
     return ({
         type: SET_HUB_STATUS,
-        payload: JSON.parse(localStorage.getItem('HUE_HUBS'))
+        payload: hubs()
     });
 };

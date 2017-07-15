@@ -4,8 +4,9 @@ const LightsReducer = (state = [], action) => {
     switch (action.type) {
         case SET_LIGHTS:
             return action.lights;
+        default:
+            return state;
     }
-    return state;
 };
 
 export default LightsReducer;

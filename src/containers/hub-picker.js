@@ -2,9 +2,16 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {connectToHub, fetchHubs} from "../actions/hubs";
 import {Link} from "react-router-dom";
+import * as R from 'ramda';
 
 class HubPicker extends Component {
-    renderHubList = (hubs) => {
+    constructor(props) {
+        super(props);
+        this.renderHubList = this.renderHubList.bind(this);
+        this.renderUseLink = this.renderUseLink.bind(this);
+    }
+
+    renderHubList(hubs) {
         return Object.keys(hubs).map(key => {
             const hub = hubs[key];
             return <tr key={key}>
@@ -19,11 +26,18 @@ class HubPicker extends Component {
                     </button>
                 </td>
                 <td>
-                    <Link to={`/hubs/${hub.id}`}>Use Hub</Link>
+                    {this.renderUseLink(hub)}
                 </td>
             </tr>;
         })
     };
+
+    renderUseLink(hub) {
+        return R.ifElse(R.isNil,
+            R.always(<span>Must connect</span>),
+            R.always(<Link to={`/hubs/${hub.id}`}>Use Hub</Link>)
+        )(hub.username)
+    }
 
     componentWillMount() {
         this.props.getHubs();
