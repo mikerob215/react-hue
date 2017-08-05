@@ -14,10 +14,10 @@ class HubPicker extends Component {
     renderHubList(hubs) {
         return Object.keys(hubs).map(key => {
             const hub = hubs[key];
-            return <tr key={key}>
+            return (
+                <tr key={key}>
                 <td>{hub.id}</td>
-                <td>{hub.ip}</td>
-                <td>{hub.status}</td>
+                    <td>{hub.internalipaddress}</td>
                 <td>
                     <button className="waves-effect waves-light btn"
                             onClick={() => this.props.connect(hub)}
@@ -28,7 +28,8 @@ class HubPicker extends Component {
                 <td>
                     {this.renderUseLink(hub)}
                 </td>
-            </tr>;
+                </tr>
+            )
         })
     };
 
@@ -64,7 +65,6 @@ class HubPicker extends Component {
                 <tr>
                     <td>ID:</td>
                     <td>IP:</td>
-                    <td>Status:</td>
                     <td>Action:</td>
                     <td>Use:</td>
                 </tr>

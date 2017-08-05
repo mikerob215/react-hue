@@ -2,10 +2,17 @@ import * as R from "ramda";
 
 const HUE_HUBS = 'HUE_HUBS';
 
-const fromStorage = R.compose(JSON.parse, R.bind(localStorage.getItem, localStorage));
+const getItem = R.bind(localStorage.getItem, localStorage);
 
-export const hubs = () => fromStorage(HUE_HUBS);
+const setItem = R.bind(localStorage.setItem, localStorage);
 
-const idLens = R.lensProp('id');
+const fromStorage = R.compose(JSON.parse, getItem);
 
-export const hubQuery = R.tryCatch(R.compose(R.view(idLens), hubs), R.always(undefined));
+const toStorage = R.compose(setItem, JSON.stringify);
+
+const hubs = R.compose(fromStorage, R.identity(HUE_HUBS));
+
+const hue = {};
+
+export default hue;
+

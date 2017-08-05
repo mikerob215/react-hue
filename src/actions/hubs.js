@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as R from "ramda";
-import {hubQuery, hubs} from "../hue-interface/index";
+import hue from '../hue-interface'
 
 const UPNP_DISCOVERY_URL = 'https://www.meethue.com/api/nupnp';
 
@@ -16,20 +16,6 @@ export const fetchHubs = () => {
     return dispatch => hubs.then(R.compose(dispatch, setHubs));
 };
 
-export const getHubs =
-    R.compose(JSON.parse, localStorage.getItem, R.identity('HUE_HUBS'));
-
-export const getHub = id => R.propOr(null, id)(getHubs);
-
-export const modifyHubAttribute = (id, attribute, value) => {
-    const hubStore = hubs();
-    hubStore[`${id}`][attribute] = value;
-    localStorage.setItem('HUE_HUBS', JSON.stringify(hubStore));
-};
-
-export const addHub = (id, config) => {
-    return localStorage.setItem('HUE_HUBS', JSON.stringify(Object.assign({}, {[id]: {...config}})));
-};
 
 /**
  * @name setHubs
@@ -39,17 +25,10 @@ export const addHub = (id, config) => {
  * @type {string}
  */
 export const SET_HUBS = 'SET_HUBS';
-export const setHubs = hubss => {
-    hubss.forEach(hub => {
-        const {id, internalipaddress} = hub;
-        if (!hubQuery(id)) {
-            addHub(id, {id, ip: internalipaddress, status: 'Unlinked'});
-        }
-    });
-
+export const setHubs = hubs => {
     return ({
         type: SET_HUBS,
-        payload: hubs()
+        payload: hubs
     });
 };
 
@@ -62,32 +41,20 @@ export const setHubs = hubss => {
  * @return {function(*): Promise.<TResult>}
  */
 export const connectToHub = hub => {
-    const {ip, id} = hub;
+    const {internalipaddress, id} = hub;
     return dispatch =>
-        axios.post(`http://${ip}/api`,
-            {devicetype: `react-hue`})
+        axios.post(`http://${internalipaddress}/api`,
+            {
+                devicetype: `react-hue`
+            })
             .then(data => {
                 const response = data.data[0];
                 if (response.success) {
-                    modifyHubAttribute(id, 'status', 'linked');
-                    modifyHubAttribute(id, 'username', response.success.username);
-                    return dispatch(setHubStatus(getHub(hub.id)));
+                    hue.toStorage(hub);
+                    return dispatch();
                 }
                 if (response.error) {
-                    modifyHubAttribute(id, 'status', response.error.description);
-                    return dispatch(setHubStatus(getHub(hub.id)))
+                    return dispatch()
                 }
             })
-};
-
-/**
- * @name setHubStatus
- * @type {string}
- */
-export const SET_HUB_STATUS = 'SET_HUB_STATUS';
-export const setHubStatus = hub => {
-    return ({
-        type: SET_HUB_STATUS,
-        payload: hubs()
-    });
 };
