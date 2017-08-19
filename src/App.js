@@ -1,20 +1,21 @@
 import React, {Component} from 'react';
-import HubPicker from './containers/hub-picker';
-import {Route, Switch} from "react-router-dom";
-import Nav from "./components/nav";
-import LightPanel from './containers/light-panel'
+import logo from './logo.svg';
+import './App.css';
 
-export default class App extends Component {
+class App extends Component {
     render() {
         return (
-            <div className="container">
-                <Nav/>
-                <Switch>
-                    <Route path="/hubs" exact component={HubPicker}/>
-                    <Route path="/hubs/:id" component={LightPanel}/>
-                    <Route component={() => <p>wtf</p>}/>
-                </Switch>
+            <div className="App">
+                <div className="App-header">
+                    <img src={logo} className="App-logo" alt="logo"/>
+                    <h2>Welcome to React</h2>
+                </div>
+                <p className="App-intro">
+                    To get started, edit <code>src/App.js</code> and save to reload.
+                </p>
             </div>
-        )
+        );
     }
 }
+
+export default App;
