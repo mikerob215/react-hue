@@ -1,14 +1,21 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {Drawer} from "material-ui";
+import {Drawer, Menu, MenuItem} from "material-ui";
 import {drawerStateChanged} from "../../actions/drawer-actions";
+import {withRouter} from "react-router-dom";
 
 class AppDrawer extends Component {
     render() {
-        const {drawer, drawerStateChanged} = this.props;
+        const {drawer, drawerStateChanged, history: {push}} = this.props;
+
         return (
             <Drawer open={drawer} docked={false} onRequestChange={drawerStateChanged}>
-                ITS A DRAWER
+                <Menu>
+                    <MenuItem primaryText="Home" onClick={() => {
+                        drawerStateChanged();
+                        return push('/');
+                    }}/>
+                </Menu>
             </Drawer>
         )
     }
@@ -16,4 +23,4 @@ class AppDrawer extends Component {
 
 const mapStateToProps = ({drawer}) => ({drawer});
 
-export default connect(mapStateToProps, {drawerStateChanged})(AppDrawer);
+export default withRouter(connect(mapStateToProps, {drawerStateChanged})(AppDrawer));

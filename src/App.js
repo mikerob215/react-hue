@@ -15,17 +15,17 @@ class App extends Component {
     render() {
         return (
             <Provider store={store}>
-                <MuiThemeProvider>
-                    <div>
-                        <AppNav/>
-                        <AppDrawer/>
-                        <BrowserRouter>
+                <BrowserRouter>
+                    <MuiThemeProvider>
+                        <div>
+                            <AppNav/>
+                            <AppDrawer/>
                             <Switch>
                                 <Route path="/" exact component={Home}/>
                             </Switch>
-                        </BrowserRouter>
-                    </div>
-                </MuiThemeProvider>
+                        </div>
+                    </MuiThemeProvider>
+                </BrowserRouter>
             </Provider>
         );
     }
