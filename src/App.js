@@ -2,21 +2,31 @@ import React, {Component} from 'react';
 import './App.css';
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Home from "./views/home/home";
-import AppBar from "react-toolbox/lib/app_bar/AppBar";
+import {MuiThemeProvider} from "material-ui";
+import {Provider} from "react-redux";
+import {createStore} from "redux";
+import rootReducer from "./reducers/index";
+import AppNav from './views/nav/nav'
+import AppDrawer from './views/drawer/drawer';
+
+const store = createStore(rootReducer);
 
 class App extends Component {
     render() {
         return (
-            <div>
-                <AppBar>
-                    adsf
-                </AppBar>
-                <BrowserRouter>
-                    <Switch>
-                        <Route path="/" exact component={Home}/>
-                    </Switch>
-                </BrowserRouter>
-            </div>
+            <Provider store={store}>
+                <MuiThemeProvider>
+                    <div>
+                        <AppNav/>
+                        <AppDrawer/>
+                        <BrowserRouter>
+                            <Switch>
+                                <Route path="/" exact component={Home}/>
+                            </Switch>
+                        </BrowserRouter>
+                    </div>
+                </MuiThemeProvider>
+            </Provider>
         );
     }
 }
