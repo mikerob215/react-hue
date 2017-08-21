@@ -15,6 +15,10 @@ class AppDrawer extends Component {
                         drawerStateChanged();
                         return push('/');
                     }}/>
+                    <MenuItem primaryText="Hubs" onClick={() => {
+                        drawerStateChanged();
+                        return push('/hubs');
+                    }}/>
                 </Menu>
             </Drawer>
         )
