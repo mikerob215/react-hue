@@ -9,10 +9,10 @@ import {
     TableHeader,
     TableHeaderColumn,
     TableRow,
-    TableRowColumn
-} from "material-ui";
-import {connect} from "react-redux";
-import {fetchHubs} from "../../actions/hubs-actions";
+    TableRowColumn,
+} from 'material-ui';
+import {connect} from 'react-redux';
+import {fetchHubs} from '../../actions/hubs-actions';
 
 class Hubs extends Component {
     componentWillMount() {
@@ -27,12 +27,12 @@ class Hubs extends Component {
         if (hubs.status !== 'SUCCESSFUL') {
             return (
                 <CircularProgress size={80} thickness={5}/>
-            )
+            );
         }
 
         return (
             <Card>
-                <CardHeader title='Hubs' subtitle='Pick your hub from the list below'/>
+                <CardHeader title="Hubs" subtitle="Pick your hub from the list below"/>
                 <Table selectable={false}>
                     <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                         <TableRow>
@@ -45,20 +45,20 @@ class Hubs extends Component {
                     <TableBody displayRowCheckbox={false}>
                         {
                             hubs.hubs.map(hub =>
-                                <TableRow>
+                                (<TableRow>
                                     <TableRowColumn>{hub.id}</TableRowColumn>
                                     <TableRowColumn>{hub.internalipaddress}</TableRowColumn>
                                     <TableRowColumn>Employed</TableRowColumn>
                                     <TableRowColumn>
-                                        <RaisedButton primary={true} label="Connect"/>
+                                        <RaisedButton primary label="Connect"/>
                                     </TableRowColumn>
-                                </TableRow>
+                                </TableRow>),
                             )
                         }
                     </TableBody>
                 </Table>
             </Card>
-        )
+        );
     }
 }
 

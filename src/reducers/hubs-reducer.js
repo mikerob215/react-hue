@@ -1,4 +1,4 @@
-import {HUB_FETCH_SUCCESSFUL, HUBS_FETCHED} from "../actions/hubs-actions";
+import {HUB_FETCH_SUCCESSFUL, HUBS_FETCHED} from '../actions/hubs-actions';
 
 const initialState = {
     hubs: [],
@@ -10,12 +10,12 @@ const hubsReducer = (state = initialState, action) => {
         case HUBS_FETCHED:
             return {
                 ...state,
-                status: 'LOADING'
+                status: 'LOADING',
             };
         case HUB_FETCH_SUCCESSFUL:
             return {
                 status: 'SUCCESSFUL',
-                hubs: action.payload
+                hubs: action.payload,
             };
         default:
             return state;

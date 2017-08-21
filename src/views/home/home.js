@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {Card, CardHeader} from "material-ui";
+import React, {Component} from 'react';
+import {Card, CardHeader} from 'material-ui';
 
 class Home extends Component {
     render() {
@@ -9,7 +9,7 @@ class Home extends Component {
                     Home
                 </CardHeader>
             </Card>
-        )
+        );
     }
 }
 

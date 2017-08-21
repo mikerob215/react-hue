@@ -1,5 +1,5 @@
-import axios from "axios";
-import * as R from "ramda";
+import axios from 'axios';
+import * as R from 'ramda';
 
 const extractData = R.prop('data');
 
