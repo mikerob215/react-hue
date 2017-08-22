@@ -4,17 +4,18 @@ import * as R from 'ramda';
 const extractData = R.prop('data');
 
 const discover = () =>
-    axios
-        .get('https://www.meethue.com/api/nupnp')
-        .then(extractData);
+  axios
+    .get('https://www.meethue.com/api/nupnp')
+    .then(extractData);
+
 const connect = hub =>
-    axios
-        .post(`http://${hub.internalipaddress}/api`)
-        .then(extractData);
+  axios
+    .post(`http://${hub.internalipaddress}/api`)
+    .then(extractData);
 
 const Hue = {
-    discover,
-    connect,
+  discover,
+  connect,
 };
 
 export default Hue;

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {connect} from "react-redux";
-import {AppBar} from "material-ui";
-import {drawerStateChanged} from "../../actions/drawer-actions";
+import {connect} from 'react-redux';
+import {AppBar} from 'material-ui';
+import {drawerStateChanged} from '../../actions/drawer-actions';
 
 class AppNav extends Component {
     render() {
@@ -10,7 +10,7 @@ class AppNav extends Component {
                 title="React Hue"
                 onLeftIconButtonTouchTap={this.props.drawerStateChanged}
             />
-        )
+        );
     }
 }
 

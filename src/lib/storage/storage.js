@@ -15,10 +15,10 @@ const destroy = R.bind(localStorage.removeItem, localStorage);
 const clear = R.bind(localStorage.clear, localStorage);
 
 const Storage = {
-    read,
-    save,
-    destroy,
-    clear,
+  read,
+  save,
+  destroy,
+  clear,
 };
 
 export default Storage;

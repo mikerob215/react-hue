@@ -5,32 +5,32 @@ import {Drawer, Menu, MenuItem} from 'material-ui';
 import {drawerStateChanged} from '../../actions/drawer-actions';
 
 class AppDrawer extends Component {
-    render() {
-        const {drawer, drawerStateChanged, history: {push}} = this.props;
+  render() {
+    const { drawer, drawerStateChanged, history: { push } } = this.props;
 
-        return (
-            <Drawer open={drawer} docked={false} onRequestChange={drawerStateChanged}>
-                <Menu>
-                    <MenuItem
-                        primaryText="Home"
-                        onClick={() => {
-                            drawerStateChanged();
-                            return push('/');
-                        }}
-                    />
-                    <MenuItem
-                        primaryText="Hubs"
-                        onClick={() => {
-                            drawerStateChanged();
-                            return push('/hubs');
-                        }}
-                    />
-                </Menu>
-            </Drawer>
-        );
-    }
+    return (
+      <Drawer open={drawer} docked={false} onRequestChange={drawerStateChanged}>
+        <Menu>
+          <MenuItem
+            primaryText="Home"
+            onClick={() => {
+              drawerStateChanged();
+              return push('/');
+            }}
+          />
+          <MenuItem
+            primaryText="Hubs"
+            onClick={() => {
+              drawerStateChanged();
+              return push('/hubs');
+            }}
+          />
+        </Menu>
+      </Drawer>
+    );
+  }
 }
 
-const mapStateToProps = ({drawer}) => ({drawer});
+const mapStateToProps = ({ drawer }) => ({ drawer });
 
-export default withRouter(connect(mapStateToProps, {drawerStateChanged})(AppDrawer));
+export default withRouter(connect(mapStateToProps, { drawerStateChanged })(AppDrawer));

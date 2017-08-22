@@ -4,12 +4,14 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import Storage from "./lib/storage/storage";
-import Hue from "./lib/hue/hue";
+import Storage from './lib/storage/storage';
+import Hue from './lib/hue/hue';
 
 injectTapEventPlugin();
 
+// eslint-disable-next-line no-undef
 window.Storage = Storage;
+// eslint-disable-next-line no-undef
 window.Hue = Hue;
 
 ReactDOM.render(<App/>, document.getElementById('root'));
