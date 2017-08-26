@@ -7,7 +7,7 @@ import * as R from 'ramda';
 
 class Hub extends Component {
     renderLinkDialog = () => {
-        const { hub, history: { push } } = this.props;
+        const { hub, hubs, history: { push }, connectToHub, match: { params: { id } } } = this.props;
         return (
             <Dialog
                 title='Hub needs to be linked'
@@ -15,7 +15,7 @@ class Hub extends Component {
                 actions={[
                   <FlatButton
                       label="Connect"
-                      onClick={() => connectToHub(hub)}
+                      onClick={() => connectToHub(hubs.hubs[id])}
                   />,
                   <FlatButton
                       label="Cancel"
