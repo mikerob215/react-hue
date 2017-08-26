@@ -3,7 +3,6 @@ import {
     Card,
     CardHeader,
     CircularProgress,
-    RaisedButton,
     Table,
     TableBody,
     TableHeader,
@@ -13,55 +12,51 @@ import {
 } from 'material-ui';
 import {connect} from 'react-redux';
 import {fetchHubs} from '../../actions/hubs-actions';
+import {withRouter} from 'react-router-dom';
 
 class Hubs extends Component {
   componentWillMount() {
     const { hubs, fetchHubs } = this.props;
-    if (hubs.status !== 'INITIAL') return;
-    fetchHubs();
+      if (hubs.status !== 'INITIAL') return;
+      fetchHubs();
   }
 
-  render() {
-    const { hubs } = this.props;
+    render() {
+        const { hubs, history: { push } } = this.props;
 
-    if (hubs.status !== 'SUCCESSFUL') {
-      return (
-        <CircularProgress size={80} thickness={5} />
-      );
+        if (hubs.status !== 'SUCCESSFUL') return <CircularProgress size={80} thickness={5}/>;
+
+        const hubsIds = Object.keys(hubs.hubs);
+        const allHubs = hubsIds.map(id => hubs.hubs[id]);
+
+        return (
+            <Card>
+                <CardHeader title="Hubs" subtitle="Pick your hub from the list below" />
+                <Table onRowSelection={index => push(`/hubs/${allHubs[index].id}`)}>
+                    <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+                        <TableRow>
+                            <TableHeaderColumn>ID</TableHeaderColumn>
+                            <TableHeaderColumn>IP</TableHeaderColumn>
+                            <TableHeaderColumn>Status</TableHeaderColumn>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody displayRowCheckbox={false}>
+                        {
+                            hubsIds.map(id => (
+                                <TableRow key={id}>
+                                    <TableRowColumn>{hubs.hubs[id].id}</TableRowColumn>
+                                    <TableRowColumn>{hubs.hubs[id].internalipaddress}</TableRowColumn>
+                                    <TableRowColumn>New</TableRowColumn>
+                                </TableRow>),
+                            )
+                        }
+                    </TableBody>
+                </Table>
+            </Card>
+        );
     }
-
-    return (
-      <Card>
-        <CardHeader title="Hubs" subtitle="Pick your hub from the list below" />
-        <Table>
-          <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-            <TableRow>
-              <TableHeaderColumn>ID</TableHeaderColumn>
-              <TableHeaderColumn>IP</TableHeaderColumn>
-              <TableHeaderColumn>Status</TableHeaderColumn>
-              <TableHeaderColumn>Action</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody displayRowCheckbox={false}>
-            {
-              hubs.hubs.map(hub =>
-                (<TableRow key={hub.id}>
-                  <TableRowColumn>{hub.id}</TableRowColumn>
-                  <TableRowColumn>{hub.internalipaddress}</TableRowColumn>
-                  <TableRowColumn>Employed</TableRowColumn>
-                  <TableRowColumn>
-                    <RaisedButton primary label="Connect" />
-                  </TableRowColumn>
-                </TableRow>),
-              )
-            }
-          </TableBody>
-        </Table>
-      </Card>
-    );
-  }
 }
 
 const mapStateToProps = ({ hubs }) => ({ hubs });
 
-export default connect(mapStateToProps, { fetchHubs })(Hubs);
+export default withRouter(connect(mapStateToProps, { fetchHubs })(Hubs));

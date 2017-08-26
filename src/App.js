@@ -1,15 +1,16 @@
-import React, {Component} from 'react';
-import './App.css';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import Home from './views/home/home';
 import {MuiThemeProvider} from 'material-ui';
 import {Provider} from 'react-redux';
 import {applyMiddleware, createStore} from 'redux';
+import React, {Component} from 'react';
+import ReduxThunk from 'redux-thunk';
+import './App.css';
+import Home from './views/home/home';
 import rootReducer from './reducers/index';
 import AppNav from './views/nav/nav';
 import AppDrawer from './views/drawer/drawer';
 import Hubs from './views/hubs/hubs';
-import ReduxThunk from 'redux-thunk';
+import Hub from './views/hubs/hub/hub';
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
@@ -24,6 +25,7 @@ class App extends Component {
               <AppDrawer />
               <Switch>
                 <Route path="/" exact component={Home} />
+                <Route path="/hubs/:id" component={Hub} />
                 <Route path="/hubs" component={Hubs} />
               </Switch>
             </div>
