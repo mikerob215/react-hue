@@ -10,8 +10,10 @@ const discover = () =>
 
 const connect = hub =>
   axios
-    .post(`http://${hub.internalipaddress}/api`)
-    .then(extractData);
+    .post(`http://${hub.internalipaddress}/api`, {
+      devicetype: 'react_hue',
+    })
+    .then(R.compose(R.head, extractData));
 
 const Hue = {
   discover,

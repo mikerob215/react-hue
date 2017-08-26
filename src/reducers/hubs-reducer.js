@@ -1,4 +1,5 @@
 import {HUB_FETCH_SUCCESSFUL, HUBS_FETCHED} from '../actions/hubs-actions';
+import * as R from 'ramda';
 
 const initialState = {
   hubs: [],
@@ -15,7 +16,7 @@ const hubsReducer = (state = initialState, action) => {
     case HUB_FETCH_SUCCESSFUL:
       return {
         status: 'SUCCESSFUL',
-        hubs: action.payload,
+        hubs: R.compose(R.map(R.head), R.groupBy(R.prop('id')))(action.payload),
       };
     default:
       return state;
