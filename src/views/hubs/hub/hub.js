@@ -13,7 +13,10 @@ class Hub extends Component {
                 title='Hub needs to be linked'
                 open={R.equals('NEEDS_LINKING')(hub.status)}
                 actions={[
-                  <FlatButton label="Connect"/>,
+                  <FlatButton
+                      label="Connect"
+                      onClick={() => connectToHub(hub)}
+                  />,
                   <FlatButton
                       label="Cancel"
                       onClick={() => push('/hubs')}
@@ -46,6 +49,10 @@ class Hub extends Component {
             [
                 R.equals('NEEDS_LINKING'),
                 this.renderLinkDialog,
+            ],
+            [
+                R.equals('SUCCESSFUL'),
+                R.always(<div>Its working</div>),
             ],
         ])(hub.status);
     }

@@ -28,10 +28,10 @@ export const connectToHub = hub => (dispatch) => {
           type: 'HUB_NEEDS_LINK',
         });
       }
-
       return dispatch({
         type: HUB_CONNECTION_SUCCESSFUL,
         payload: response,
       });
     });
 };
+

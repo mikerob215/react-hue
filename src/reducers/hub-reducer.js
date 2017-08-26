@@ -19,6 +19,13 @@ const HubReducer = createReducer(initialState, {
             status: 'NEEDS_LINKING',
         };
     },
+    HUB_CONNECTION_SUCCESSFUL(state, action) {
+        return {
+            ...state,
+            status: 'SUCCESSFUL',
+            hub: action.payload,
+        }
+    }
 });
 
 export default HubReducer;
