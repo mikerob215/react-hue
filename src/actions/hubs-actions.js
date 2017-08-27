@@ -1,4 +1,11 @@
 import Hue from '../lib/hue/hue';
+import * as R from "ramda";
+
+const extractId = R.prop('id');
+
+const groupById = R.groupBy(extractId);
+
+const normalizeById =  R.compose(R.map(R.head), groupById);
 
 export const HUBS_FETCHED = 'HUBS_FETCHED';
 export const HUB_FETCH_SUCCESSFUL = 'HUB_FETCH_SUCCESSFUL';
@@ -31,7 +38,7 @@ export const connectToHub = hub => (dispatch) => {
       }
       return dispatch({
         type: HUB_CONNECTION_SUCCESSFUL,
-        payload: response,
+        payload: normalizeById(response),
       });
     });
 };

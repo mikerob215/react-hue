@@ -1,11 +1,5 @@
-import * as R from 'ramda';
 import createReducer from "../lib/redux-helpers/create-reducer";
-
-const extractId = R.prop('id');
-
-const groupById = R.groupBy(extractId);
-
-const normalizeById =  R.compose(R.map(R.head), groupById);
+import {HUB_FETCH_SUCCESSFUL, HUBS_FETCHED} from "../actions/hubs-actions";
 
 const initialState = {
   hubs: [],
@@ -13,16 +7,17 @@ const initialState = {
 };
 
 const hubsReducer = createReducer(initialState, {
-    HUBS_FETCHED(state) {
+    [HUBS_FETCHED](state) {
         return {
             ...state,
             status: 'LOADING',
         };
     },
-    HUB_FETCH_SUCCESSFUL(state, action) {
+    [HUB_FETCH_SUCCESSFUL](state, action) {
         return {
+            ...state,
             status: 'SUCCESSFUL',
-            hubs: normalizeById(action.payload),
+            hubs: action.payload,
         };
     }
 });
