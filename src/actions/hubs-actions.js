@@ -15,8 +15,9 @@ export const fetchHubs = () =>
   };
 
 
-export const HUB_CONNECTION_SUCCESSFUL = 'HUB_CONNECTION_SUCCESSFUL';
 export const HUB_CONNECTION_ATTEMPT = 'HUB_CONNECTION_ATTEMPT';
+export const HUB_CONNECTION_SUCCESSFUL = 'HUB_CONNECTION_SUCCESSFUL';
+export const HUB_NEEDS_LINK = 'HUB_NEEDS_LINKS';
 export const connectToHub = hub => (dispatch) => {
   dispatch({
     type: HUB_CONNECTION_ATTEMPT,
@@ -25,7 +26,7 @@ export const connectToHub = hub => (dispatch) => {
     .then(response => {
       if (response.error) {
         return dispatch({
-          type: 'HUB_NEEDS_LINK',
+          type: HUB_NEEDS_LINK,
         });
       }
       return dispatch({

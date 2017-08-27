@@ -1,4 +1,5 @@
 import createReducer from '../lib/redux-helpers/create-reducer';
+import {HUB_CONNECTION_ATTEMPT, HUB_CONNECTION_SUCCESSFUL, HUB_NEEDS_LINK} from "../actions/hubs-actions";
 
 const initialState = {
     status: 'INITIAL',
@@ -7,19 +8,19 @@ const initialState = {
 };
 
 const HubReducer = createReducer(initialState, {
-    HUB_CONNECTION_ATTEMPT(state) {
+    [HUB_CONNECTION_ATTEMPT](state) {
         return {
             ...state,
             status: 'LOADING',
         };
     },
-    HUB_NEEDS_LINK(state) {
+    [HUB_NEEDS_LINK](state) {
         return {
             ...state,
             status: 'NEEDS_LINKING',
         };
     },
-    HUB_CONNECTION_SUCCESSFUL(state, action) {
+    [HUB_CONNECTION_SUCCESSFUL](state, action) {
         return {
             ...state,
             status: 'SUCCESSFUL',

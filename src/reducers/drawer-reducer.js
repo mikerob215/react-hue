@@ -1,12 +1,11 @@
-import {DRAWER_STATE_CHANGED} from '../actions/drawer-actions';
+import createReducer from "../lib/redux-helpers/create-reducer";
+import * as R from "ramda";
+import {DRAWER_STATE_CHANGED} from "../actions/drawer-actions";
 
-const drawerReducer = (state = false, action) => {
-  switch (action.type) {
-    case DRAWER_STATE_CHANGED:
-      return !state;
-    default:
-      return state;
-  }
-};
+const drawerReducer = createReducer(false, {
+  [DRAWER_STATE_CHANGED](state) {
+    return R.not(state);
+  },
+});
 
 export default drawerReducer;

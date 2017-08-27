@@ -9,22 +9,25 @@ class Hub extends Component {
     renderLinkDialog = () => {
         const { hub, hubs, history: { push }, connectToHub, match: { params: { id } } } = this.props;
         return (
-            <Dialog
-                title='Hub needs to be linked'
-                open={R.equals('NEEDS_LINKING')(hub.status)}
-                actions={[
-                  <FlatButton
-                      label="Connect"
-                      onClick={() => connectToHub(hubs.hubs[id])}
-                  />,
-                  <FlatButton
-                      label="Cancel"
-                      onClick={() => push('/hubs')}
-                  />
-                ]}
-            >
-              Press the link button on your hub, then press ok.
-            </Dialog>
+            <div>
+                <CircularProgress style={{ margin: '0 auto' }} />
+                <Dialog
+                    title='Hub needs to be linked'
+                    open={R.equals('NEEDS_LINKING')(hub.status)}
+                    actions={[
+                        <FlatButton
+                            label="Connect"
+                            onClick={() => connectToHub(hubs.hubs[id])}
+                        />,
+                        <FlatButton
+                            label="Cancel"
+                            onClick={() => push('/hubs')}
+                        />
+                    ]}
+                >
+                    Press the link button on your hub, then press ok.
+                </Dialog>
+            </div>
         )
     };
 
