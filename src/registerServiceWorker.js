@@ -21,7 +21,9 @@ const isLocalhost = Boolean(
 export default function register() {
 	if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
 		// The URL constructor is available in all browsers that support SW.
-		const publicUrl = new URL(process.env.PUBLIC_URL, window.location);
+		// noinspection NodeModulesDependencies
+        // noinspection Annotator
+        const publicUrl = new URL(process.env.PUBLIC_URL, window.location);
 		if (publicUrl.origin !== window.location.origin) {
 			// Our service worker won't work if PUBLIC_URL is on a different origin
 			// from what our page is served on. This might happen if a CDN is used to
@@ -44,14 +46,18 @@ export default function register() {
 }
 
 function registerValidSW(swUrl) {
-	navigator.serviceWorker
+	// noinspection Annotator
+    navigator.serviceWorker
 		.register(swUrl)
 		.then(registration => {
 			registration.onupdatefound = () => {
-				const installingWorker = registration.installing;
+				// noinspection Annotator
+                const installingWorker = registration.installing;
 				installingWorker.onstatechange = () => {
 					if (installingWorker.state === 'installed') {
-						if (navigator.serviceWorker.controller) {
+						// noinspection Annotator
+                        // noinspection Annotator
+                        if (navigator.serviceWorker.controller) {
 							// At this point, the old content will have been purged and
 							// the fresh content will have been added to the cache.
 							// It's the perfect time to display a "New content is
@@ -82,8 +88,10 @@ function checkValidServiceWorker(swUrl) {
 								response.headers.get('content-type').indexOf('javascript') === -1
 			) {
 				// No service worker found. Probably a different app. Reload the page.
-				navigator.serviceWorker.ready.then(registration => {
-					registration.unregister().then(() => {
+				// noinspection Annotator
+                navigator.serviceWorker.ready.then(registration => {
+					// noinspection Annotator
+                    registration.unregister().then(() => {
 						window.location.reload();
 					});
 				});
@@ -99,10 +107,13 @@ function checkValidServiceWorker(swUrl) {
 		});
 }
 
+// noinspection JSUnusedGlobalSymbols
 export function unregister() {
 	if ('serviceWorker' in navigator) {
-		navigator.serviceWorker.ready.then(registration => {
-			registration.unregister();
+		// noinspection Annotator
+        navigator.serviceWorker.ready.then(registration => {
+			// noinspection Annotator
+            registration.unregister();
 		});
 	}
 }
