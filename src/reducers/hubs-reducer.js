@@ -1,13 +1,17 @@
 import createReducer from "../lib/redux-helpers/create-reducer";
-import {HUB_FETCH_SUCCESSFUL, HUBS_FETCHED} from "../actions/hubs-actions";
+import Storage from '../lib/storage/storage';
+import {HUB_FETCH_SUCCESSFUL, HUBS_FETCHING} from "../actions/hubs-actions";
+import * as R from "ramda";
+
+const savedHubsOrEmpty = R.ifElse(R.compose(R.not, R.isEmpty), R.identity, R.always({}));
 
 const initialState = {
-  hubs: [],
+  hubs: savedHubsOrEmpty(Storage.read('HUE_HUBS')),
   status: 'INITIAL',
 };
 
 const hubsReducer = createReducer(initialState, {
-    [HUBS_FETCHED](state) {
+    [HUBS_FETCHING](state) {
         return {
             ...state,
             status: 'LOADING',

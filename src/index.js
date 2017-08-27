@@ -6,6 +6,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import Storage from './lib/storage/storage';
 import Hue from './lib/hue/hue';
+import * as R from "ramda";
 
 injectTapEventPlugin();
 
@@ -14,5 +15,6 @@ window.Storage = Storage;
 // eslint-disable-next-line no-undef
 window.Hue = Hue;
 // eslint-disable-next-line no-undef
+window.R = R;
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();

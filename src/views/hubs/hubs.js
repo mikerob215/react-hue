@@ -16,15 +16,14 @@ import {withRouter} from 'react-router-dom';
 
 class Hubs extends Component {
   componentWillMount() {
-    const { hubs, fetchHubs } = this.props;
-      if (hubs.status !== 'INITIAL') return;
-      fetchHubs();
+    const { fetchHubs } = this.props;
+    fetchHubs();
   }
 
     render() {
         const { hubs, history: { push } } = this.props;
 
-        if (hubs.status !== 'SUCCESSFUL') return <CircularProgress size={80} thickness={5}/>;
+        if (hubs.status === 'LOADING' || hubs.status === 'INITIAL') return <CircularProgress size={80} thickness={5}/>;
 
         const hubsIds = Object.keys(hubs.hubs);
         const allHubs = hubsIds.map(id => hubs.hubs[id]);
