@@ -1,6 +1,7 @@
 import Hue from '../lib/hue/hue';
 import Storage from '../lib/storage/storage';
 import * as R from "ramda";
+import {checkHubs} from "./storage-actions";
 
 const extractId = R.prop('id');
 
@@ -14,11 +15,14 @@ export const HUBS_FETCHING = 'HUBS_FETCHING';
 export const HUB_FETCH_SUCCESSFUL = 'HUB_FETCH_SUCCESSFUL';
 export const fetchHubs = () => {
     return dispatch => {
+        const readHubs = Storage.read('HUE_HUBS');
         dispatch({type: HUBS_FETCHING});
-        if (Storage.read('HUE_HUBS')) {
+        dispatch(checkHubs(readHubs));
+        if (readHubs) {
+            dispatch(checkHubs(readHubs));
             dispatch({
                 type: HUB_FETCH_SUCCESSFUL,
-                payload: Storage.read('HUE_HUBS')
+                payload: readHubs
             });
             return;
         }

@@ -14,6 +14,7 @@ import Hub from './views/hubs/hub/hub';
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
+window.store = store;
 class App extends Component {
   render() {
     return (

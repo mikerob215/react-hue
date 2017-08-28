@@ -5,6 +5,8 @@ import {connect} from 'react-redux';
 import {connectToHub} from '../../../actions/hubs-actions';
 import * as R from 'ramda';
 
+const hubNeedsLinking = R.equals('NEEDS_LINKING');
+
 class Hub extends Component {
     renderLinkDialog = () => {
         const { hub, hubs, history: { push }, connectToHub, match: { params: { id } } } = this.props;
@@ -13,7 +15,7 @@ class Hub extends Component {
                 <CircularProgress style={{ margin: '0 auto' }} />
                 <Dialog
                     title='Hub needs to be linked'
-                    open={R.equals('NEEDS_LINKING')(hub.status)}
+                    open={hubNeedsLinking(hub.status)}
                     actions={[
                         <FlatButton
                             label="Connect"
@@ -37,10 +39,8 @@ class Hub extends Component {
         connectToHub(hubs.hubs[id]);
     }
 
-    render() {
-        const { hub } = this.props;
-
-        return R.cond([
+    renderViewForStatus = R.cond(
+        [
             [
                 R.equals('INITIAL'),
                 R.always(null),
@@ -57,7 +57,13 @@ class Hub extends Component {
                 R.equals('SUCCESSFUL'),
                 R.always(<div>Its working</div>),
             ],
-        ])(hub.status);
+        ]
+    );
+
+    render() {
+        const { hub } = this.props;
+
+        return this.renderViewForStatus(hub.status);
     }
 }
 
