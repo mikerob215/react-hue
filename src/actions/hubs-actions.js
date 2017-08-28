@@ -59,3 +59,5 @@ export const connectToHub = hub => (dispatch) => {
         });
 };
 
+export const HUB_CHANGED = 'HUB_CHANGED';
+export const changeHub = R.always(HUB_CHANGED);

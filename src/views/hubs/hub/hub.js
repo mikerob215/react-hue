@@ -2,12 +2,29 @@ import React, {Component} from 'react';
 import {CircularProgress, Dialog, FlatButton} from 'material-ui';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {connectToHub} from '../../../actions/hubs-actions';
+import {changeHub, connectToHub} from '../../../actions/hubs-actions';
 import * as R from 'ramda';
 
 const hubNeedsLinking = R.equals('NEEDS_LINKING');
 
 class Hub extends Component {
+    renderViewForStatus = R.cond(
+        [
+            [
+                R.either(R.equals('INITIAL'), R.equals('LOADING')),
+                R.always(<CircularProgress style={{ margin: '0 auto' }} />),
+            ],
+            [
+                R.equals('NEEDS_LINKING'),
+                this.renderLinkDialog,
+            ],
+            [
+                R.equals('SUCCESSFUL'),
+                R.always(<div>Its working</div>),
+            ],
+        ]
+    );
+
     renderLinkDialog = () => {
         const { hub, hubs, history: { push }, connectToHub, match: { params: { id } } } = this.props;
         return (
@@ -36,29 +53,9 @@ class Hub extends Component {
     componentWillMount() {
         const { connectToHub, match: { params: { id } }, hubs } = this.props;
 
+        changeHub();
         connectToHub(hubs.hubs[id]);
     }
-
-    renderViewForStatus = R.cond(
-        [
-            [
-                R.equals('INITIAL'),
-                R.always(null),
-            ],
-            [
-                R.equals('LOADING'),
-                R.always(<CircularProgress style={{ margin: '0 auto' }} />),
-            ],
-            [
-                R.equals('NEEDS_LINKING'),
-                this.renderLinkDialog,
-            ],
-            [
-                R.equals('SUCCESSFUL'),
-                R.always(<div>Its working</div>),
-            ],
-        ]
-    );
 
     render() {
         const { hub } = this.props;
