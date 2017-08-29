@@ -5,34 +5,25 @@ import {connect} from 'react-redux';
 import {changeHub, connectToHub} from '../../../actions/hubs-actions';
 import * as R from 'ramda';
 
-const hubNeedsLinking = R.equals('NEEDS_LINKING');
 
 class Hub extends Component {
-    renderViewForStatus = R.cond(
-        [
-            [
-                R.either(R.equals('INITIAL'), R.equals('LOADING')),
-                R.always(<CircularProgress style={{ margin: '0 auto' }} />),
-            ],
-            [
-                R.equals('NEEDS_LINKING'),
-                this.renderLinkDialog,
-            ],
-            [
-                R.equals('SUCCESSFUL'),
-                R.always(<div>Its working</div>),
-            ],
-        ]
-    );
-
     renderLinkDialog = () => {
-        const { hub, hubs, history: { push }, connectToHub, match: { params: { id } } } = this.props;
+        const {
+            hub,
+            hubs,
+            history: { push },
+            connectToHub,
+            match: {
+                params: { id }
+            }
+        } = this.props;
+
         return (
             <div>
                 <CircularProgress style={{ margin: '0 auto' }} />
                 <Dialog
                     title='Hub needs to be linked'
-                    open={hubNeedsLinking(hub.status)}
+                    open={'NEEDS_LINKING' === hub.status}
                     actions={[
                         <FlatButton
                             label="Connect"
@@ -49,6 +40,26 @@ class Hub extends Component {
             </div>
         )
     };
+    renderViewForStatus = R.cond(
+        [
+            [
+                R.equals('INITIAL'),
+                R.always(null),
+            ],
+            [
+                R.equals('LOADING'),
+                R.always(<CircularProgress style={{ margin: '0 auto' }} />),
+            ],
+            [
+                R.equals('NEEDS_LINKING'),
+                this.renderLinkDialog,
+            ],
+            [
+                R.equals('SUCCESSFUL'),
+                R.always(<div>Its working</div>),
+            ],
+        ]
+    );
 
     componentWillMount() {
         const { connectToHub, match: { params: { id } }, hubs } = this.props;

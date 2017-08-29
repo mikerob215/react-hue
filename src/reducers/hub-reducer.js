@@ -4,7 +4,6 @@ import * as R from "ramda";
 
 const initialState = {
     status: 'INITIAL',
-    error: null,
     hub: null,
 };
 
