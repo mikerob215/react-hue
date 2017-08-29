@@ -6,13 +6,14 @@ import React, {Component} from 'react';
 import ReduxThunk from 'redux-thunk';
 import './App.css';
 import Home from './views/home/home';
-import rootReducer from './reducers/index';
+import rootReducer from './reducers';
 import AppNav from './views/nav/nav';
 import AppDrawer from './views/drawer/drawer';
 import Hubs from './views/hubs/hubs';
 import Hub from './views/hubs/hub/hub';
+import {composeWithDevTools} from "redux-devtools-extension/developmentOnly";
 
-const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(ReduxThunk)));
 
 window.store = store;
 class App extends Component {
