@@ -5,4 +5,6 @@ export const storageStatuses = {
     SAVING: 'SAVING',
 };
 
-export const STORAGE_STATUS_CHANGED = 'STORAGE_STATUS_CHANGED';
+export const STORAGE_STATUS_EMPTY = 'STORAGE_STATUS_EMPTY';
+
+export const STORAGE_STATUS_SAVED = 'STORAGE_STATUS_SAVED';

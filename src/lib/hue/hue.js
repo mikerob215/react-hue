@@ -15,9 +15,14 @@ const connect = hub =>
     })
     .then(R.compose(R.head, extractData));
 
+const HueControllerFactory = R.curry((hubs, hub) => {
+    const { internalipaddress } = hub;
+});
+
 const Hue = {
-  discover,
-  connect,
+    discover,
+    connect,
+    HueControllerFactory
 };
 
 export default Hue;

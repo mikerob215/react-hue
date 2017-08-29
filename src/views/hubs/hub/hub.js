@@ -5,8 +5,15 @@ import {connect} from 'react-redux';
 import {changeHub, connectToHub} from '../../../actions/hubs-actions';
 import * as R from 'ramda';
 
-
 class Hub extends Component {
+
+    componentWillMount() {
+        const { connectToHub, match: { params: { id } }, hubs } = this.props;
+
+        changeHub();
+        connectToHub(hubs.hubs[id]);
+    }
+
     renderLinkDialog = () => {
         const {
             hub,
@@ -40,6 +47,7 @@ class Hub extends Component {
             </div>
         )
     };
+
     renderViewForStatus = R.cond(
         [
             [
@@ -60,13 +68,6 @@ class Hub extends Component {
             ],
         ]
     );
-
-    componentWillMount() {
-        const { connectToHub, match: { params: { id } }, hubs } = this.props;
-
-        changeHub();
-        connectToHub(hubs.hubs[id]);
-    }
 
     render() {
         const { hub } = this.props;

@@ -15,19 +15,21 @@ export const HUBS_FETCHING = 'HUBS_FETCHING';
 export const HUB_FETCH_SUCCESSFUL = 'HUB_FETCH_SUCCESSFUL';
 export const fetchHubs = () => {
     return dispatch => {
-        const readHubs = Storage.read('HUE_HUBS');
+        const hubs = Storage.read('HUE_HUBS');
+
         dispatch({type: HUBS_FETCHING});
-        dispatch(checkHubs(readHubs));
-        if (readHubs) {
-            dispatch(checkHubs(readHubs));
+        dispatch(checkHubs(hubs));
+        if (hubs) {
+            dispatch(checkHubs(hubs));
             dispatch({
                 type: HUB_FETCH_SUCCESSFUL,
-                payload: readHubs
+                payload: hubs
             });
             return;
         }
-        return Hue.discover()
-            .then((response) => {
+
+        Hue.discover()
+            .then(response => {
                 const normalizedResponse = normalizeById(response);
                 saveHubs(normalizedResponse);
                 dispatch({
@@ -41,20 +43,32 @@ export const fetchHubs = () => {
 export const HUB_CONNECTION_ATTEMPT = 'HUB_CONNECTION_ATTEMPT';
 export const HUB_CONNECTION_SUCCESSFUL = 'HUB_CONNECTION_SUCCESSFUL';
 export const HUB_NEEDS_LINK = 'HUB_NEEDS_LINKS';
-export const connectToHub = hub => (dispatch) => {
+export const connectToHub = hub => dispatch => {
     dispatch({
         type: HUB_CONNECTION_ATTEMPT,
     });
+
+    if (Storage.read(hub.id)) {
+        dispatch({
+            type: HUB_CONNECTION_SUCCESSFUL,
+            payload: Storage.read(hub.id),
+        });
+        return;
+    }
+
     Hue.connect(hub)
         .then(response => {
             if (response.error) {
-                return dispatch({
+                dispatch({
                     type: HUB_NEEDS_LINK,
                 });
+                return;
             }
-            return dispatch({
+
+            Storage.save(hub.id, response.success.username);
+            dispatch({
                 type: HUB_CONNECTION_SUCCESSFUL,
-                payload: response,
+                payload: Storage.read(hub.id),
             });
         });
 };
